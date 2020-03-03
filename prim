@@ -1,0 +1,72 @@
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cstring>
+using namespace std;
+typedef long long ll;
+const int maxn = 1000;
+const int INF = 0x3f3f3f3f;
+int T, n, m, x;
+int map[maxn][maxn];//存图
+int lowcost[maxn], mst[maxn];
+void prim(int u)//最小生成树起点
+{
+    int sum = 0;//最小生成树权值
+    for(int i = 1; i <= n; i++)//初始化两个数组
+    {
+        lowcost[i] = map[u][i];
+        mst[i] = u;
+    }
+    mst[u] = -1;//设置成-1表示已经加入mst
+    for(int i = 1; i < n; i++)//此处只需要迭代n-1次即可
+    {
+        int minn = INF;
+        int v = -1;
+        //在lowcost数组中寻找未加入mst的最小值
+        for(int j = 1; j <= n; j++)
+        {
+            if(mst[j] != -1 && lowcost[j] < minn)
+            {
+                v = j;
+                minn = lowcost[j];
+            }
+        }
+        if(v != -1)//v=-1表示未找到最小的边,
+        {
+            mst[v] = -1;
+            sum += lowcost[v];
+            for(int j = 1; j <= n; j++)//更新最短边
+            {
+                if(mst[j] != -1 && lowcost[j] > map[v][j])
+                {
+                    lowcost[j] = map[v][j];
+                    mst[j] = v;
+                }
+            }
+        }
+    }
+    printf("%d\n", sum);
+}
+int main()
+{
+    cin >> n >> m;
+    memset(map, 0, sizeof(map));
+    for(int i = 1; i <= m; i++)
+    {
+        int u, v, w;
+        cin >> u >> v >> w;
+        map[u][v] = map[v][u] = w;
+    }
+    for(int i = 1; i <= n; i++)
+    {
+        for(int j = 1; j <= n; j++)
+        {
+            if(i == j)
+                map[i][j] = 0;
+            else if(!map[i][j])
+                map[i][j] = INF;
+        }
+    }
+    prim(1);
+    return 0;
+}
