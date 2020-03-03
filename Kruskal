@@ -1,0 +1,54 @@
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+using namespace std;
+int fa[5005];
+struct node
+{
+	int s,e,lx;//结构体储存边
+}edge[5005];
+
+bool cmp(const node &a,const node &b)
+{
+	return a.lx<b.lx;
+}
+
+int father(int x)//并查集
+{
+	if(fa[x]!=x)
+        return father(fa[x]);
+	else
+        return x;
+}
+
+void uni(int x,int y)//并查集
+{
+	fa[father(y)]=father(x);
+}
+
+int main()
+{
+    int n,m;//n是点数，m是边数
+    cin >> n >> m;
+	for(int i=1;i<=m;i++)
+	{
+		cin>>edge[i].s>>edge[i].e>>edge[i].lx;
+	}
+	for(int i=1;i<=n;i++) fa[i]=i;//自己最开始就是自己的老大
+
+	sort(edge+1,edge+1+m,cmp);//边按权值排序
+
+	int ans=0,k=0;
+	for(int i=1;i<=m;i++)
+	{
+		if(k==n-1) break;//是否已找齐边
+		if(father(edge[i].s)!=father(edge[i].e))//是否为未加入的点
+		{
+			uni(edge[i].s,edge[i].e);//是否成环
+			ans+=edge[i].lx;//
+			k++;
+		}
+	}
+	printf("%d",ans);
+	return 0;
+}
