@@ -1,0 +1,54 @@
+# helloworld
+
+#include <iostream>
+
+using namespace std;
+int map[2000][2000];
+int dis[2000];
+int flag[2000];
+#define inf 0x3f3f3f3f
+int main()
+{
+    int n,m;
+    cin>>n>>m;
+    for(int i=1; i<=n; i++){
+        dis[i]=inf;
+        flag[i]=0;
+        for(int j=1; j<=n; j++){
+            if(i==j)
+                map[i][j]=0;
+            else
+                map[i][j]=inf;
+        }
+    }
+
+    int s,e,lx;
+    for(int i=1; i<=m; i++)
+    {
+        cin>>s>>e>>lx;
+        map[s][e]=lx;
+    }
+    flag[1]=1;
+    int now=1;
+    for(int i=1;i<=n;i++)
+   {
+       int temp=inf;
+
+       for(int j=1;j<=n;j++)    //找最短的点vi
+       {
+           if(flag[j]==0&&dis[j]<temp)
+           {
+               temp=dis[j];
+               now=j;
+           }
+       }
+       flag[now]=1;
+       for(int j=1;j<=n;j++)
+            dis[j]=min(dis[j],dis[now]+map[now][j]);
+
+   }
+    for(int i=1;i<=n;i++){
+        printf("%d ",dis[i]);
+    }
+    return 0;
+}
