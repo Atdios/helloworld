@@ -1,0 +1,65 @@
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cmath>
+using namespace std;
+
+double MAX=10000010;
+int a,b;
+struct Node{
+    double x,y;
+};
+
+Node ar[100005],br[100005];
+
+bool cmpx(Node a,Node b){
+    return a.x<b.x;
+}
+bool cmpy(Node a,Node b){
+    return a.y<b.y;
+}
+double min_a(double a,double b){
+    return a<b?a:b;
+}  //返回最小值
+double dis(Node a,Node b){
+    return sqrt(pow(a.x-b.x,2)+pow(a.y-b.y,2));
+}  //返回点与点之间的距离
+
+double cal(int s,int e)
+{
+    int mid,i,j,tail=0;   //mid表示数组中间的位置下标
+    double d;
+    if(s==e) return MAX;   //如果只有一个点
+    mid=(s+e)/l++]=ar[i];
+    }
+
+    for(i=mid+1;i<e&&ar[i].x-ar[mid].x<d;i++)    //同上，筛选右边的点
+    {
+        br[tail++]=ar[i];
+    }
+
+    sort(br,br+tail,cmpy);          //对矩形内的点按照y坐标进行排序
+
+    for(i=0;i<tail;i++){
+        for(j=i+1;j<tail&&br[j].y-br[i].y<d;j++){
+            if(d>dis(br[i],br[j])){
+                d=min_a(d,dis(br[i],br[j]));
+            }
+        }
+    }
+    return d;
+}
+
+int main()
+{
+
+    int n;
+    cin>>n;
+    for(int i=0;i<n;i++){
+        scanf("%lf %lf",&ar[i].x,&ar[i].y);
+    }
+    sort(ar,ar+n,cmpx);            //按x对ar排序
+    double d=cal(0,n);
+    printf("%.2lf\n",d/2.0);
+    return 0;
+}
