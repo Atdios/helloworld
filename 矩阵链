@@ -1,0 +1,42 @@
+#include<stdio.h>
+#include<iostream>
+#include<stdlib.h>
+using namespace std;
+int n;
+int p[101],m[100][100],s[100][100];
+
+void solve()
+{
+	int j=0;
+	int t=0;
+    for(int i=1;i<=n;i++)
+        m[i][i]=0;
+    for(int r=2;r<=n;r++){
+        for(int i=1;i<=n-r+1;i++){
+
+            int j=i+r-1;
+            m[i][j]=m[i+1][j]+p[i-1]*p[i]*p[j];
+            s[i][j]=i;
+
+            for(int k=i+1;k<j;k++){
+                t=m[i][k]+m[k+1][j]+p[i-1]*p[k]*p[j];
+                if(t<m[i][j]){
+                    s[i][j]=k;//在k位置断开得到最优解
+                    m[i][j]=t;
+                }
+            }
+        }
+    }
+}
+
+int main()
+{
+    scanf("%d",&n);
+    for(int i=0;i<=n;i++)
+    {
+    	scanf("%d",&p[i]);
+	}
+    solve();
+    printf("%d\n",m[1][n]);
+    return 0;
+}
