@@ -1,0 +1,42 @@
+#include<iostream>
+#include<cstdio>
+#include<string>
+#include<cstring>
+#include<algorithm>
+using namespace std;
+
+struct node
+{
+    int s,e;
+    int i;
+}s[10010];
+int cmp(node x,node y)
+{
+    return x.e<y.e;
+}
+int main()
+{
+    int n,num;
+    while(scanf("%d",&n)!=EOF)
+    {
+        num=1;
+        for(int i=1;i<=n;i++)
+        {
+            scanf("%d %d",&s[i].s,&s[i].e);
+            s[i].i=i;
+        }
+        sort(s,s+n,cmp);
+        int time=s[1].e;
+        for(int i=2;i<=n;i++)
+        {
+            if(time<=s[i].s)
+            {
+                time=s[i].e;
+                num++;
+            }
+        }
+        printf("%d\n",num);
+
+    }
+    return 0;
+}
