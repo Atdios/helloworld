@@ -1,0 +1,56 @@
+#include<iostream>
+#include<cstring>
+#include<stack>
+#include<algorithm>
+#define maxx 1010
+using namespace std;
+int dp[maxx][maxx];
+char a[maxx];
+char b[maxx];
+int main()
+{
+
+    memset(dp,0,sizeof(dp));
+    scanf("%s",a);
+    scanf("%s",b);
+    int la=strlen(a);
+    int lb=strlen(b);
+    for(int i=1; i<=la; i++)
+    {
+        for(int j=1; j<=lb; j++)
+        {
+            if(a[i-1]==b[j-1])
+                dp[i][j]=dp[i-1][j-1]+1;
+            else
+                dp[i][j]=max(dp[i-1][j],dp[i][j-1]);
+        }
+    }
+    int i=la,j=lb;
+    stack<char>s;
+    while(dp[i][j])
+    {
+        if(dp[i][j]==dp[i-1][j])
+        {
+            i--;
+        }
+        else if(dp[i][j]==dp[i][j-1])
+        {
+            j--;
+        }
+        else if(dp[i][j]>dp[i-1][j-1])
+        {
+            i--;
+            j--;
+            s.push(a[i]);
+        }
+    }
+    printf("最长子序列长度为:% d\n",dp[la][lb]);
+    char id;
+    while(!s.empty())
+    {
+        id=s.top();
+        printf("%c",id);
+        s.pop();
+    }
+    return 0;
+}
